@@ -348,7 +348,6 @@ export function ProfileForm({ userInfo }: ProfileFormProps) {
       <SubmitButton
         text="수정"
         className="mt-8"
-        onSubmit={handleSubmit}
         type="submit"
       />
     </form>
