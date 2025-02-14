@@ -1,8 +1,47 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import pickupTimeIcon from '@/assets/icons/pickup-time-icon.svg';
 import settlementIcon from '@/assets/icons/settlement-icon.svg';
+import { getBakeryByUserId, getSettlementInfo } from '../../../api/bakery/bakery';
 
 export function MenuList() {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSettlementClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      // 먼저 가게 정보를 조회하여 bakeryId를 얻음
+      const bakeryInfo = await getBakeryByUserId();
+      // bakeryId로 정산 정보 조회
+      const settlementInfo = await getSettlementInfo(bakeryInfo.bakeryId);
+      
+      navigate('/owner/settlement/edit', {
+        state: {
+          settlementInfo: {
+            settlementId: settlementInfo.settlementId,
+            bankName: settlementInfo.bankName,
+            accountHolderName: settlementInfo.accountHolderName,
+            accountNumber: settlementInfo.accountNumber,
+            emailForTaxInvoice: settlementInfo.emailForTaxInvoice,
+            businessLicenseFileUrl: settlementInfo.businessLicenseFileUrl
+          }
+        }
+      });
+    } catch (error) {
+      console.error('정산 정보 조회 실패:', error);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('정산 정보를 불러오는데 실패했습니다.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="px-6 space-y-3">
       <Link 
@@ -13,13 +52,16 @@ export function MenuList() {
         <img src={pickupTimeIcon} alt="픽업 시간" className="w-5 h-5" />
       </Link>
 
-      <Link 
-        to="/owner/settlement/edit"
-        className="flex items-center justify-between p-4 rounded-2xl border border-[#D9D9D9] bg-[#F2F2F2]"
+      <button 
+        onClick={handleSettlementClick}
+        disabled={isLoading}
+        className="w-full flex items-center justify-between p-4 rounded-2xl border border-[#D9D9D9] bg-[#F2F2F2]"
       >
-        <span className="text-gray-900 font-medium">거래 및 정산</span>
+        <span className="text-gray-900 font-medium">
+          {isLoading ? '로딩중...' : '거래 및 정산'}
+        </span>
         <img src={settlementIcon} alt="거래 및 정산" className="w-6 h-6" />
-      </Link>
+      </button>
     </div>
   );
 }
