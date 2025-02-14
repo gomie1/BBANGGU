@@ -4,6 +4,7 @@ import { Header } from '../../../components/owner/editprofile/Header';
 import { SubmitButton } from '../../../common/form/SubmitButton';
 import BottomNavigation from '../../../components/owner/navigations/BottomNavigations/BottomNavigation';
 import { IoTrashOutline } from 'react-icons/io5';
+import { updateSettlement } from '../../../api/bakery/bakery';
 
 interface SettlementInfo {
   settlementId: number;
@@ -49,8 +50,48 @@ export function EditSettlement() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: 정산 정보 수정 API 호출
-    navigate('/owner/mypage');
+
+    // 필수 입력값 검증
+    if (!formData.bankName.trim()) {
+      alert('은행명을 입력해주세요.');
+      return;
+    }
+    if (!formData.accountHolderName.trim()) {
+      alert('예금주를 입력해주세요.');
+      return;
+    }
+    if (!formData.accountNumber.trim()) {
+      alert('계좌번호를 입력해주세요.');
+      return;
+    }
+    if (!formData.emailForTaxInvoice.trim()) {
+      alert('세금계산서 발행 이메일을 입력해주세요.');
+      return;
+    }
+
+    try {
+      if (!settlementInfo) {
+        throw new Error('정산 정보를 찾을 수 없습니다.');
+      }
+
+      await updateSettlement(settlementInfo.settlementId, {
+        bankName: formData.bankName,
+        accountHolderName: formData.accountHolderName,
+        accountNumber: formData.accountNumber,
+        emailForTaxInvoice: formData.emailForTaxInvoice,
+        businessLicenseFileUrl: formData.businessLicenseFileUrl
+      });
+
+      alert('정산 정보가 성공적으로 수정되었습니다.');
+      navigate('/owner/mypage');
+    } catch (error) {
+      console.error('정산 정보 수정 실패:', error);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('정산 정보 수정에 실패했습니다.');
+      }
+    }
   };
 
   const inputClassName = "w-full px-4 py-3 rounded-[8px] border border-[#EFEFEF] placeholder-[#8E8E8E] focus:outline-none focus:border-[#FF9B50]";

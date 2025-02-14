@@ -41,6 +41,14 @@ interface CreateSettlementRequest {
   businessLicenseFileUrl?: string;
 }
 
+interface UpdateSettlementRequest {
+  bankName: string;
+  accountHolderName: string;
+  accountNumber: string;
+  emailForTaxInvoice: string;
+  businessLicenseFileUrl?: string | null;
+}
+
 // 사장님 ID로 가게 조회
 export const getBakeryByUserId = async (): Promise<BakeryInfo> => {
   const accessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM5NTExOTE5LCJleHAiOjE3NDAxMTY3MTl9.1TANi8zQMdtN3uHUGbcuNunWJxWLZoZPoNZ3uePfiUM'; // 테스트용 토큰
@@ -161,6 +169,32 @@ export const createSettlement = async (data: CreateSettlementRequest): Promise<S
     return responseData.data;
   } catch (error) {
     console.error('Error creating settlement:', error);
+    throw error;
+  }
+};
+
+// 정산 정보 수정 API 추가
+export const updateSettlement = async (bakeryId: number, data: UpdateSettlementRequest): Promise<void> => {
+  const accessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM5NTExOTE5LCJleHAiOjE3NDAxMTY3MTl9.1TANi8zQMdtN3uHUGbcuNunWJxWLZoZPoNZ3uePfiUM';
+  
+  try {
+    const response = await fetch(`http://i12d102.p.ssafy.io:8081/bakery/${bakeryId}/settlement`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || '정산 정보 수정에 실패했습니다.');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating settlement info:', error);
     throw error;
   }
 };
