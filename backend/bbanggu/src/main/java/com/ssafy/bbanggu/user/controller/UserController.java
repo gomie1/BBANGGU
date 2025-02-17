@@ -2,7 +2,6 @@ package com.ssafy.bbanggu.user.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import com.ssafy.bbanggu.auth.dto.EmailRequest;
 import com.ssafy.bbanggu.auth.dto.JwtToken;
@@ -22,7 +21,6 @@ import com.ssafy.bbanggu.user.dto.UserResponse;
 import com.ssafy.bbanggu.user.repository.UserRepository;
 import com.ssafy.bbanggu.user.service.UserService;
 
-import org.springframework.boot.autoconfigure.jms.artemis.ArtemisNoOpBindingRegistry;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -31,6 +29,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,12 +40,20 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
     private final EmailService emailAuthService;
 	private final UserRepository userRepository;
 
-    // ✅ 회원가입
-    @PostMapping("/register")
+
+	/**
+	 * 회원가입 API
+	 *
+	 * @param request 회원가입 요청 정보 (name, email, password, phone, userType)
+	 * @param result 유효성 검사 결과
+	 * @return 생성된 사용자 정보 반환
+	 */
+	@PostMapping("/register")
     public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest request, BindingResult result) {
         // 회원가입 요청 데이터 검증
         if (result.hasErrors()) {
@@ -184,10 +191,11 @@ public class UserController {
     @PatchMapping("/update")
     public ResponseEntity<ApiResponse> updateUser(
 		@AuthenticationPrincipal CustomUserDetails userDetails,
-		@RequestBody UpdateUserRequest updates) {
+		@RequestPart(value = "user", required = false) UpdateUserRequest updates,
+		@RequestPart(value = "profileImage", required = false) MultipartFile file
+	) {
 		// ✅ 변경할 필드만 업데이트
-		userService.update(userDetails, updates);
-
+		userService.update(userDetails, updates, file);
 		return ResponseEntity.ok(new ApiResponse("회원 정보가 성공적으로 수정되었습니다.", null));
     }
 
