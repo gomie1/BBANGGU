@@ -314,7 +314,7 @@ export default function OwnerSignupPage() {
                   }
                 />
                 {isEmailVerificationSent && !isEmailVerified && (
-                  <p className="text-sm text-blue-600">이메일로 전송된 인증 코드를 입력해주세요.</p>
+                  <p className="text-sm text-[#FF9F43]">이메일로 전송된 인증 코드를 입력해주세요.</p>
                 )}
                 {isEmailVerified && <p className="text-sm text-green-600">인증되었습니다!</p>}
               </div>
