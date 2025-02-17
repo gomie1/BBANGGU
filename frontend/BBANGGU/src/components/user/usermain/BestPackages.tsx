@@ -49,7 +49,7 @@ export default function BestPackages({ favoritebakery, toggleFavoriteForUser }: 
             >
               <div className="relative aspect-square mb-2">
                 <img
-                  src={item.bakeryImageUrl ? `${imgBaseUrl}/uploads/${item.bakeryImageUrl}` : `${imgBaseUrl}/uploads/908dc862-4523-44f6-8e02-26c91e05b4f3_bread-1739509107088.jpg`}
+                  src={item.bakeryImageUrl ? `${imgBaseUrl}${item.bakeryImageUrl}` : `${imgBaseUrl}/uploads/7ac950cf-8a1e-4087-9215-9a84b67eb93e_breadjjanggu.jpg`}
                   alt={item.name || "빵집 이미지"}
                   className="w-full h-full object-cover rounded-[12px]"
                 />
