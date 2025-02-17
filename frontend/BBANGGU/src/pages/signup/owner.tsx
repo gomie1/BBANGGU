@@ -9,6 +9,7 @@ import { StoreInfoStep } from "./steps/StoreInfoStep"
 import { SettlementInfoStep } from "./steps/SettlementInfoStep"
 import { SignupCompleteStep } from "./steps/SignupCompleteStep"
 import { OwnerApi } from "../../api/common/signup/OwnerApi"
+import instance from "../../api/axios"
 
 type SignupStep = "email" | "password" | "phone" | "store" | "settlement" | "complete"
 
@@ -67,6 +68,10 @@ export default function OwnerSignupPage() {
   const [isPhoneVerificationSent, setIsPhoneVerificationSent] = useState(false)
   const [isPhoneVerified] = useState(false)
 
+    // 버튼 variant 상태 추가
+    const [buttonVariant, setButtonVariant] = useState<"primary" | "secondary">("primary")
+    const [isConfirmButtonClicked, setIsConfirmButtonClicked] = useState(false)
+
   const mainRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -89,10 +94,15 @@ export default function OwnerSignupPage() {
   }
 
   const handleEmailVerification = async () => {
+    // 버튼 클릭 시 바로 인증 필드를 표시
+    setIsEmailVerificationSent(true)
+    setButtonVariant("secondary")
     try {
       await OwnerApi.sendEmailVerification(formData.email);
-      setIsEmailVerificationSent(true);
+      // 이메일 전송 성공 시 버튼 스타일 변경 (필요 시 추가)
     } catch (error: any) {
+      // 이메일 전송 실패 시 인증 필드를 숨김
+      setButtonVariant("primary")
       if (error.code === 3001) {
         alert('너무 많은 요청을 보냈습니다. 나중에 다시 시도하세요.');
       } else {
@@ -224,7 +234,7 @@ export default function OwnerSignupPage() {
   const handleBackClick = () => {
     switch (currentStep) {
       case "email":
-        navigate("/signup")
+        navigate("/signup")  // 첫 단계에서는 회원가입 유형 선택 페이지로
         break
       case "password":
         setCurrentStep("email")
@@ -293,9 +303,9 @@ export default function OwnerSignupPage() {
                   placeholder="gildong123@gmail.com"
                   actionButton={
                     <Button
-                      variant="secondary"
+                      variant={buttonVariant}
                       fullWidth={false}
-                      className="px-4 h-[38px] text-[14px] rounded-lg"
+                      className="px-4 h-[38px] text-[14px] rounded-xl"
                       disabled={!isEmailValid || isEmailVerified}
                       onClick={handleEmailVerification}
                     >
@@ -319,10 +329,13 @@ export default function OwnerSignupPage() {
                   placeholder="인증번호 6자리 입력"
                   actionButton={
                     <Button
-                      variant="secondary"
+                      variant={isConfirmButtonClicked ? "secondary" : "primary"}
                       fullWidth={false}
-                      className="px-4 h-[32px] text-sm rounded-lg"
-                      onClick={handleEmailVerificationSubmit}
+                      className="px-4 h-[32px] text-sm rounded-xl"
+                      onClick={() => {
+                        handleEmailVerificationSubmit()
+                        setIsConfirmButtonClicked(true)
+                      }}
                       disabled={formData.emailVerificationCode.length !== 6}
                     >
                       확인
