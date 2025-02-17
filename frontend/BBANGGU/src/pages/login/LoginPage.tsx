@@ -51,8 +51,11 @@ export default function LoginPage() {
       const userResponse = await getUserInfo()
       console.log('사용자 정보 응답:', userResponse)
       
-      // 리덕스에 사용자 정보 저장 (이제 localStorage에도 자동으로 저장됨)
-      dispatch(setUserInfo(userResponse.data))
+      // 리덕스에 사용자 정보 저장할 때 isAuthenticated도 함께 설정
+      dispatch(setUserInfo({
+        ...userResponse.data,
+        isAuthenticated: true  // 여기에 isAuthenticated를 true로 설정
+      }))
       
       // 리덕스 스토어 전체 상태 확인
       const state = store.getState()
@@ -61,7 +64,7 @@ export default function LoginPage() {
         user: state.user
       })
 
-      setIsLoading(true)
+      setIsLoading(false)
       
       // 사용자 역할에 따른 리다이렉션
       if (loginResponse.data.user_type === 'OWNER') {
@@ -103,7 +106,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <div className="flex justify-center mt-12 mb-10">
+      <div className="flex justify-center mt-32 mb-10">
         <img
           src="/icon/bbanggu-icon.png"
           alt="빵꾸 아이콘"
@@ -111,7 +114,7 @@ export default function LoginPage() {
         />
       </div>
 
-      <main className="flex-1 flex flex-col justify-start px-8">
+      <main className="flex flex-col items-center justify-start px-8">
         <div className="w-full max-w-[500px] space-y-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
