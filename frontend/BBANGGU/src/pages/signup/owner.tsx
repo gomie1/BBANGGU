@@ -9,7 +9,6 @@ import { StoreInfoStep } from "./steps/StoreInfoStep"
 import { SettlementInfoStep } from "./steps/SettlementInfoStep"
 import { SignupCompleteStep } from "./steps/SignupCompleteStep"
 import { OwnerApi } from "../../api/common/signup/OwnerApi"
-import instance from "../../api/axios"
 
 type SignupStep = "email" | "password" | "phone" | "store" | "settlement" | "complete"
 
