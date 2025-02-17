@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from 'react-redux'
 import { User, Lock } from "lucide-react"
+import { login } from "../../api/common/login/login"
 import { getKakaoLoginUrl } from "../../api/common/login/KakaoLogin"
 import { getUserInfo } from "../../api/user/user"
 import { setUserInfo } from "../../store/slices/userSlice"
@@ -35,7 +36,7 @@ export default function LoginPage() {
     setIsLoading(true)
     try {
       // 1. 로그인 API 호출
-      await login(formData)
+      await login(formData, dispatch)
 
       // 4. 사용자 정보 가져오기
       const userResponse = await getUserInfo()
