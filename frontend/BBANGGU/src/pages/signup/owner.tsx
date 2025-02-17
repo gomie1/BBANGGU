@@ -374,28 +374,46 @@ export default function OwnerSignupPage() {
         )
       case "store":
         return (
-          <div className="space-y-6 overflow-y-auto max-h-[calc(100vh-150px)]">
-            <h1 className="text-[22px] font-bold">가게 정보</h1>
-            <p className="text-[15px] text-gray-600">입력하신 내용은 언제든지 변경 가능해요.</p>
-            <StoreInfoStep formData={formData} onChange={handleChange} />
+          <div className="max-h-[calc(100vh-180px)] overflow-y-auto
+              [&::-webkit-scrollbar]:w-2
+              [&::-webkit-scrollbar-track]:rounded-full
+              [&::-webkit-scrollbar-track]:bg-gray-100
+              [&::-webkit-scrollbar-thumb]:rounded-full
+              [&::-webkit-scrollbar-thumb]:bg-gray-300
+              dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+              dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+            <div className="mr-2">
+              <h1 className="text-[22px] font-bold">가게 정보</h1>
+              <p className="text-[15px] text-gray-600 mb-4">입력하신 내용은 언제든지 변경 가능해요.</p>
+              <StoreInfoStep formData={formData} onChange={handleChange} />
+            </div>
           </div>
         )
       case "settlement":
         return (
-          <div className="space-y-6 overflow-y-auto max-h-[calc(100vh-150px)]">
-            <h1 className="text-[22px] font-bold">정산 정보</h1>
-            <p className="text-[15px] text-gray-600">모든 항목이 입력되어야, 정산금이 이체됩니다.</p>
-            <SettlementInfoStep
-              formData={{
-                bankName: formData.bankName,
-                accountHolder: formData.accountHolder,
-                accountNumber: formData.accountNumber,
-                taxEmail: formData.taxEmail,
-                businessRegistration: formData.businessRegistrationNumber,
-              }}
-              onChange={handleChange}
-              onSubmit={handleSettlementInfoSubmit}
-            />
+          <div className="max-h-[calc(100vh-180px)] overflow-y-auto
+              [&::-webkit-scrollbar]:w-2
+              [&::-webkit-scrollbar-track]:rounded-full
+              [&::-webkit-scrollbar-track]:bg-gray-100
+              [&::-webkit-scrollbar-thumb]:rounded-full
+              [&::-webkit-scrollbar-thumb]:bg-gray-300
+              dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+              dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+            <div className="mr-2">
+              <h1 className="text-[22px] font-bold">정산 정보</h1>
+              <p className="text-[15px] text-gray-600 mb-4">모든 항목이 입력되어야, 정산금이 이체됩니다.</p>
+              <SettlementInfoStep
+                formData={{
+                  bankName: formData.bankName,
+                  accountHolder: formData.accountHolder,
+                  accountNumber: formData.accountNumber,
+                  taxEmail: formData.taxEmail,
+                  businessRegistration: formData.businessRegistrationNumber,
+                }}
+                onChange={handleChange}
+                onSubmit={handleSettlementInfoSubmit}
+              />
+            </div>
           </div>
         )
       case "complete":
