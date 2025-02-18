@@ -251,7 +251,7 @@ export function MapPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="가게 이름을 입력해주세요"
-              className="w-full py-2 pl-10 pr-4 rounded-full border border-gray-200"
+              className="w-full py-2 pl-10 pr-4 rounded-full border border-gray-200 focus:border-[#FF9F43] focus:outline-none"
             />
             <svg
               viewBox="0 0 24 24"
