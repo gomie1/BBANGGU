@@ -37,7 +37,8 @@ export function MapPage() {
   const [error, setError] = useState<string | null>(null)
   const dispatch = useDispatch<AppDispatch>();
   const { bakeryList, loading, error: bakeryError } = useSelector((state: RootState) => state.bakery);
-  const { userInfo, isAuthenticated } = useSelector((state: RootState) => state.user);
+  const { userInfo } = useSelector((state: RootState) => state.user);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const [userAddress, setUserAddress] = useState<string>("위치를 설정해주세요");
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredBakeries, setFilteredBakeries] = useState<BakeryInfo[]>([]);
@@ -98,15 +99,13 @@ export function MapPage() {
           dispatch(loginSuccess({
             data: {
               access_token: accessToken,
-              refresh_token: "",
-              user_type: 'USER'
+              user_type: 'USER',
             }
           }));
           
           // user 슬라이스 업데이트
           dispatch(setUserInfo({
             ...userResponse,
-            isAuthenticated: true
           }));
           
           console.log('인증 상태 복원 완료:', {
