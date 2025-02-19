@@ -14,9 +14,11 @@ import { getUserInfo } from '../../../api/user/user';
 import { getBakeryByUserId } from '../../../api/bakery/bakery';
 
 function MyPage() {
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
+  // const userInfo = useSelector((state: RootState) => state.user.userInfo)
   // const { accessToken } = useSelector((state: RootState) => state.auth);
 
   const accessToken = store.getState().auth.accessToken;
