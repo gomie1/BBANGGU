@@ -217,7 +217,7 @@ export default function CustomerSignupPage() {
           </div>
         )
       case "complete":
-        return <SignupCompleteStep userName={formData.name} />
+        return <SignupCompleteStep userName={formData.name} email={formData.email} password={formData.password} />
     }
   }
 
