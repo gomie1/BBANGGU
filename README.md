@@ -1,7 +1,70 @@
 # 빵을 구하자, 빵구
+
 <!--프로젝트 대문 이미지-->
+
 <img src="https://github.com/user-attachments/assets/eec5168f-77e5-4084-9134-71f99f357b3a" alt="BBANGGU_Title"/>
 <br>
+
+<!--목차-->
+
+# 목차
+
+- [[1] 프로젝트 개요](#1-about-the-project)
+  
+  - [Features](#features)
+  - [Technologies](#technologies)
+
+- [[2] 프로젝트 구조](#2-getting-started)
+  
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+
+- [[3] 주요 기능](#3-usage)
+
+- [[4] 폴더구조](#4-contribution)
+  
+  <br>
+  <br>
+
+# 1️⃣ 프로젝트 개요
+
+# 🥨 빵구 (BBANGGU) - 베이커리 마감 할인 서비스
+
+## 🌱 서비스 개요
+
+**빵구**는 베이커리의 마감 임박 제품을 할인된 가격에 구매할 수 있는 플랫폼입니다.
+
+### 🎯 기획 의도
+
+- **음식물 쓰레기 감소**: 매일 폐기되는 베이커리 제품을 줄여 환경 보호에 기여
+- **소비자 혜택**: 신선한 베이커리 제품을 합리적인 가격에 제공
+- **점주 매출 증대**: 폐기 예정 제품의 판매를 통한 손실 최소화
+
+### 💡 주요 특징
+
+- **AI 기반 빵 인식**: YOLO와 EfficientNet B2 모델을 활용한 자동 빵 인식 시스템
+- **빵꾸러미 시스템**: 점주가 마감 임박 제품을 패키지로 구성하여 할인 판매
+- **실시간 재고 관리**: 베이커리의 재고 현황을 실시간으로 확인 및 관리
+- **간편한 결제 시스템**: 소비자가 쉽게 구매할 수 있는 직관적인 결제 프로세스
+
+### 🎁 서비스 가치
+
+- **환경적 가치**: 음식물 쓰레기 감소를 통한 환경 보호
+
+- **경제적 가치**: 소비자는 할인된 가격으로, 점주는 폐기 손실 감소
+
+- **사회적 가치**: 지속 가능한 소비 문화 조성에 기여
+  
+  <br>
+
+### 1-2. 프로젝트 기간
+
+- 2025-01-13 ~ 2025-02-21 (총 6주)
+  
+  <br>
+
+### 1-3. 기술 스택
 
 <div align="center">
   <h1>
@@ -86,133 +149,74 @@
   </div>
   </div>
 
-
-<!--목차-->
-
-# 목차
-
-- [[1] 프로젝트 개요](#1-about-the-project)
-  - [Features](#features)
-  - [Technologies](#technologies)
-- [[2] 프로젝트 구조](#2-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-- [[3] 주요 기능](#3-usage)
-- [[4] 폴더구조](#4-contribution)
-<br>
-<br>
-
-# 1️⃣ 프로젝트 개요
-
-# 🥨 빵구 (BBANGGU) - 베이커리 마감 할인 서비스
-
-## 🌱 서비스 개요
-
-**빵구**는 베이커리의 마감 임박 제품을 할인된 가격에 구매할 수 있는 플랫폼입니다.
-
-### 🎯 기획 의도
-
-- **음식물 쓰레기 감소**: 매일 폐기되는 베이커리 제품을 줄여 환경 보호에 기여
-- **소비자 혜택**: 신선한 베이커리 제품을 합리적인 가격에 제공
-- **점주 매출 증대**: 폐기 예정 제품의 판매를 통한 손실 최소화
-
-### 💡 주요 특징
-- **AI 기반 빵 인식**: YOLO와 EfficientNet B2 모델을 활용한 자동 빵 인식 시스템
-- **빵꾸러미 시스템**: 점주가 마감 임박 제품을 패키지로 구성하여 할인 판매
-- **실시간 재고 관리**: 베이커리의 재고 현황을 실시간으로 확인 및 관리
-- **간편한 결제 시스템**: 소비자가 쉽게 구매할 수 있는 직관적인 결제 프로세스
-  
-### 🎁 서비스 가치
-- **환경적 가치**: 음식물 쓰레기 감소를 통한 환경 보호
-- **경제적 가치**: 소비자는 할인된 가격으로, 점주는 폐기 손실 감소
-- **사회적 가치**: 지속 가능한 소비 문화 조성에 기여
-<br>
-
-### 1-2. 프로젝트 기간
-- 2025-01-13 ~ 2025-02-21 (총 6주)
-<br>
-
-### 1-3. 기술 스택
-
-FE : React.js, JavaScript, HTML5, KAKAO MAP API  
-BE : Java, SpringBoot, JPA, FastAPI  
-DB : MySQL  
-AI : pyTorch, YOLOv8, EfficientNet  
-Infra : AWS, Docker, Jenkins  
-형상 관리 : Gitlab  
-협업 도구 : Jira, Notion  
-배포 자동화 : Jenkins, Docker, Dockerhub, gitLab  
 <br>
 
 ## 🙇 팀원 소개
 
-<table>
-<tr>
-<td><b>김유진</b></td>
-<td><b>김휘동</b></td>
-<td><b>정나금</b></td>
-<td><b>신은찬</b></td>
-<td><b>권가영</b></td>
-<td><b>서유민</b></td>
-</tr>
-<tr>
-<td><img src="https://github.com/user-attachments/assets/69a74b1e-e8a1-44dd-b2c1-be8f43ea4293" alt="Yujin"/></td>
-<td><img src="https://github.com/user-attachments/assets/75bf9404-cfe2-46a9-b55a-3545047b1ed4" alt="Hwidong"/></td>
-<td><img src="https://github.com/user-attachments/assets/1d47995d-8cb9-4232-953e-c740dcc0ccfa" alt="Nageum"/></td>
-<td><img src="https://github.com/user-attachments/assets/b8e01d40-2361-4291-a554-ad186f19300c" alt="Eunchan"/></td>
-<td><img src="https://github.com/user-attachments/assets/db9eb4c6-1d41-4a06-917d-0a25f3989b3d" alt="Garong"/></td>
-<td><img src="https://github.com/user-attachments/assets/24943c97-8cb5-4e86-bb35-d4d5e6498c21" alt="Yumin"/></td>
-</tr>
-</table>
-<br>
-<br>
+| [👑김유진](https://github.com/zladb)                                                         | [김휘동](https://github.com/HwiDong6831)                                                       | [정나금](https://github.com/gomie1)                                                           | [신은찬](https://github.com/eunchan0324)                                                       | [권가영](https://github.com/gayeong718)                                                       | [서유민](https://github.com/sennaseo)                                                        |
+|:-----------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
+| ![Yujin](https://github.com/user-attachments/assets/69a74b1e-e8a1-44dd-b2c1-be8f43ea4293) | ![Hwidong](https://github.com/user-attachments/assets/75bf9404-cfe2-46a9-b55a-3545047b1ed4) | ![Nageum](https://github.com/user-attachments/assets/1d47995d-8cb9-4232-953e-c740dcc0ccfa) | ![Eunchan](https://github.com/user-attachments/assets/b8e01d40-2361-4291-a554-ad186f19300c) | ![Garong](https://github.com/user-attachments/assets/db9eb4c6-1d41-4a06-917d-0a25f3989b3d) | ![Yumin](https://github.com/user-attachments/assets/24943c97-8cb5-4e86-bb35-d4d5e6498c21) |
+| `BE`, `Infra`                                                                             | `BE`, `AI`                                                                                  | `BE`                                                                                       | `FE`                                                                                        | `FE`                                                                                       | `FE`                                                                                      |
 
 # 2️⃣ 프로젝트 구조
 
 ## a. ERD
+
 <img src="https://github.com/user-attachments/assets/58651c5f-f68b-4fa7-9eeb-76df388cbf54" alt="ERD" width=50% height=50%/>
 <br>
 
 ## b. 아키텍처 구성도
+
 <img src="https://github.com/user-attachments/assets/9c890c9b-292e-4d23-99fa-827153d37585" alt="Architecture" width=65% height=65%/>
 <br>
 <br>
 
-
 # 3️⃣ 주요 기능
 
 ## [1] 판매자
- ### 1. 빵꾸러미 생성 
-  #### - YOLOv8s 카메라 인식 (파인튜닝 모델)
-  <img src="https://github.com/user-attachments/assets/d11c13e8-1f81-437e-a4eb-fe1c3a27b70b" alt="1-1-1" width="250"/>
 
-  #### - AI 빵꾸러미 조합 추천 (탐욕 알고리즘)
-  <img src="https://github.com/user-attachments/assets/c6977939-ec05-4548-a88f-cc45e427eac6" alt="1-1-2" width="250"/>
+### 1. 빵꾸러미 생성
 
- ### 2. AI 분석 리포트 제공
- <img src="https://github.com/user-attachments/assets/cc3243c3-9a75-4b77-8f1d-0a71e4029854" alt="1-2" width="250"/>
+#### - YOLOv8s 카메라 인식 (파인튜닝 모델)
+
+<img src="https://github.com/user-attachments/assets/d11c13e8-1f81-437e-a4eb-fe1c3a27b70b" alt="1-1-1" width="250"/>
+
+#### - AI 빵꾸러미 조합 추천 (탐욕 알고리즘)
+
+<img src="https://github.com/user-attachments/assets/c6977939-ec05-4548-a88f-cc45e427eac6" alt="1-1-2" width="250"/>
+
+### 2. AI 분석 리포트 제공
+
+<img src="https://github.com/user-attachments/assets/cc3243c3-9a75-4b77-8f1d-0a71e4029854" alt="1-2" width="250"/>
 
 <br>
 <br>
 
 ## [2] 구매자
- ### 1. 빵꾸러미 예약 (결제)
-  #### - TOSS PAYMENTS API
-  <img src="https://github.com/user-attachments/assets/455826e2-f407-438f-b8a4-ca05b4c44391" alt="2-1-1" width="250"/>
- 
- ### 2. 절약한 자원 확인
- <img src="https://github.com/user-attachments/assets/2bc62c4f-2ab6-4ad2-9ad1-bddbdfba3504" alt="2-2" width="250"/>
 
- ### 3. 지도 (Kakao Map API)
- <img src="https://github.com/user-attachments/assets/ac489deb-b4b3-4ce2-9c31-4756587b00f7" alt="2-3" width="250"/>
+### 1. 빵꾸러미 예약 (결제)
+
+#### - TOSS PAYMENTS API
+
+<img src="https://github.com/user-attachments/assets/455826e2-f407-438f-b8a4-ca05b4c44391" alt="2-1-1" width="250"/>
+
+### 2. 절약한 자원 확인
+
+<img src="https://github.com/user-attachments/assets/2bc62c4f-2ab6-4ad2-9ad1-bddbdfba3504" alt="2-2" width="250"/>
+
+### 3. 지도 (Kakao Map API)
+
+<img src="https://github.com/user-attachments/assets/ac489deb-b4b3-4ce2-9c31-4756587b00f7" alt="2-3" width="250"/>
 
 <br>
 <br>
 
 ## [3] 공통
- ### 1. PWA (Progressive Web App)
- <img src="https://github.com/user-attachments/assets/b339f29b-ed81-42c0-972a-d829a97e3e86" alt="3-1" width="250"/>
 
- ### 2. Kakao 로그인 (OAuth2)
- <img src="https://github.com/user-attachments/assets/a7c81ac1-d471-4686-9695-274e427c09a2" alt="3-2" width="250"/>
+### 1. PWA (Progressive Web App)
+
+<img src="https://github.com/user-attachments/assets/b339f29b-ed81-42c0-972a-d829a97e3e86" alt="3-1" width="250"/>
+
+### 2. Kakao 로그인 (OAuth2)
+
+<img src="https://github.com/user-attachments/assets/a7c81ac1-d471-4686-9695-274e427c09a2" alt="3-2" width="250"/>
