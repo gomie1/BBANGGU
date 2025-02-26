@@ -9,20 +9,28 @@
 
 # 목차
 
-- [[1] 프로젝트 개요](#1-about-the-project)
-  
-  - [Features](#features)
-  - [Technologies](#technologies)
-
-- [[2] 프로젝트 구조](#2-getting-started)
-  
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-
-- [[3] 주요 기능](#3-usage)
-
-- [[4] 폴더구조](#4-contribution)
+- [[1] 프로젝트 개요](#1️⃣-프로젝트-개요)
+  - [서비스 개요](#-서비스-개요)
+  - [기획 의도](#-기획-의도)
+  - [주요 특징](#-주요-특징)
+  - [서비스 가치](#-서비스-가치)
+  - [프로젝트 기간](#1-2-프로젝트-기간)
+  - [기술 스택](#1-3-기술-스택)
+  - [팀원 소개](#-팀원-소개)
+- [[2] 프로젝트 구조](#2️⃣-프로젝트-구조)
+  - [ERD](#a-erd)
+  - [아키텍처 구성도](#b-아키텍처-구성도)
+- [[3] 주요 기능](#3️⃣-주요-기능)
+  - [판매자](#1-판매자)
+    - [빵꾸러미 생성](#1-빵꾸러미-생성)
+    - [AI 분석 리포트 제공](#2-ai-분석-리포트-제공)
+  - [구매자](#2-구매자)
+    - [빵꾸러미 예약 (결제)](#1-빵꾸러미-예약-결제)
+    - [절약한 자원 확인](#2-절약한-자원-확인)
+    - [지도 (Kakao Map API)](#3-지도-kakao-map-api)
+  - [공통](#3-공통)
+    - [PWA (Progressive Web App)](#1-pwa-progressive-web-app)
+    - [Kakao 로그인 (OAuth2)](#2-kakao-로그인-oauth2)
   
   <br>
   <br>
