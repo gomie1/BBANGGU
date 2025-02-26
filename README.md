@@ -175,7 +175,7 @@ Infra : AWS, Docker, Jenkins
 <br>
 
 ## b. 아키텍처 구성도
-<img src="https://github.com/user-attachments/assets/9c890c9b-292e-4d23-99fa-827153d37585" alt="Architecture" width=50% height=50%/>
+<img src="https://github.com/user-attachments/assets/9c890c9b-292e-4d23-99fa-827153d37585" alt="Architecture" width=65% height=65%/>
 <br>
 <br>
 
