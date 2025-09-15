@@ -47,7 +47,7 @@
 | 홈 화면 | YOLOv8 빵 재고 인식 | AI 빵꾸러미 조합 추천 | AI 분석 리포트 제공 | 
 |-----------|-----------|-----------|-----------| 
 | <img src="https://github.com/user-attachments/assets/7d23357c-ffd7-44eb-ab2d-ede4d350d3fd" height="500"/> | <img src="https://github.com/user-attachments/assets/d11c13e8-1f81-437e-a4eb-fe1c3a27b70b" height="500"/> | <img src="https://github.com/user-attachments/assets/c6977939-ec05-4548-a88f-cc45e427eac6" height="500"/> | <img src="https://github.com/user-attachments/assets/cc3243c3-9a75-4b77-8f1d-0a71e4029854" height="500"/> | 
-| - 등록된 빵꾸러미<br> 현황 조회<br>- 신규 빵꾸러미 등록<br> 및 관리<br>- 가게 리뷰 조회 및 관리 | - YOLOv8 기반 빵 종류와 수량 인식<br>- 자체 라벨링 데이터<br> 1,200장 이상을 기반으로<br> 모델 학습<br>- 등록된 정보는 자동<br> DB 반영 | - 인식된 재고 기반 빵꾸러미<br> 패키지 자동 구성<br>- 가격/종류를 균형있게<br> 고려한 패키지 추천<br> | - Top3 빵 재고 현황 조회<br>- 일/주/월 단위 재고량<br> 그래프로 시각화<br>- GPT API 연동을 통한<br> 분석 레포트 제공<br> |
+| - 등록된 빵꾸러미 현황 조회<br>- 신규 빵꾸러미 등록 및 관리<br>- 가게 리뷰 조회 및 관리 | - YOLOv8 기반 빵 <br>종류와 수량 인식<br>- 자체 라벨링 데이터<br> 1,200장 이상을 기반<br> 모델 학습<br>- 등록된 정보는 자동<br> DB 반영 | - 인식된 재고 기반 빵꾸러미<br> 패키지 자동 구성<br>- 가격/종류를 균형있게<br> 고려한 패키지 추천<br> | - Top3 빵 재고 현황 조회<br>- 일/주/월 단위 재고량<br> 그래프로 시각화<br>- GPT API 연동을 통한<br> 분석 레포트 제공<br> |
 <br> 
 
 ### 2. 고객 (구매자) 
