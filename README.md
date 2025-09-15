@@ -72,7 +72,7 @@
 ### 2. 고객 (구매자) 
 | 홈 화면 | 지도 (Kakao Map) | 결제 (Tosspayments) | 절약한 자원/예약 확인 | 
 |-----------|-----------|-----------|-----------| 
-| <img src="https://github.com/user-attachments/assets/2ee5d697-b348-48b5-a255-6358bdbe523a" height="500"/> | <img src="https://github.com/user-attachments/assets/ac489deb-b4b3-4ce2-9c31-4756587b00f7" height="500"/> | <img src="https://github.com/user-attachments/assets/455826e2-f407-438f-b8a4-ca05b4c44391" height="500"/> | <img src="https://github.com/user-attachments/assets/2bc62c4f-2ab6-4ad2-9ad1-bddbdfba3504" height="500"/> | 
+| <img src="https://github.com/user-attachments/assets/2ee5d697-b348-48b5-a255-6358bdbe523a" height="500"/> | <img src="https://github.com/user-attachments/assets/ac489deb-b4b3-4ce2-9c31-4756587b00f7" height="500"/> | <img src="https://github.com/user-attachments/assets/455826e2-f407-438f-b8a4-ca05b4c44391" height="450"/> | <img src="https://github.com/user-attachments/assets/2bc62c4f-2ab6-4ad2-9ad1-bddbdfba3504" height="500"/> | 
 <br>
 
 > 홈 화면
