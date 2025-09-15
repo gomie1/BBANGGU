@@ -46,7 +46,7 @@
 ### 1. 사장님 (판매자)
 | 홈 화면 | YOLOv8 빵 재고 인식 | AI 빵꾸러미 조합 추천 | AI 분석 리포트 제공 |
 |-----------|-----------|-----------|-----------|
-| <img src="https://github.com/user-attachments/assets/7d23357c-ffd7-44eb-ab2d-ede4d350d3fd" height="500"/> | <img src="https://github.com/user-attachments/assets/d11c13e8-1f81-437e-a4eb-fe1c3a27b70b" height=" 400"/> | <img src="https://github.com/user-attachments/assets/c6977939-ec05-4548-a88f-cc45e427eac6" height="500"/> | <img src="https://github.com/user-attachments/assets/cc3243c3-9a75-4b77-8f1d-0a71e4029854" height="500"/> |
+| <img src="https://github.com/user-attachments/assets/7d23357c-ffd7-44eb-ab2d-ede4d350d3fd" height="500"/> | <img src="https://github.com/user-attachments/assets/d11c13e8-1f81-437e-a4eb-fe1c3a27b70b" height=" 380"/> | <img src="https://github.com/user-attachments/assets/c6977939-ec05-4548-a88f-cc45e427eac6" height="500"/> | <img src="https://github.com/user-attachments/assets/cc3243c3-9a75-4b77-8f1d-0a71e4029854" height="500"/> |
 | 설명 | 설명 | 설명 | 설명 |
 <br>
 
