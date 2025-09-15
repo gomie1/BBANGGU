@@ -49,24 +49,10 @@
 | <img src="https://github.com/user-attachments/assets/7d23357c-ffd7-44eb-ab2d-ede4d350d3fd" height="500"/> | <img src="https://github.com/user-attachments/assets/d11c13e8-1f81-437e-a4eb-fe1c3a27b70b" height="450"/> | <img src="https://github.com/user-attachments/assets/c6977939-ec05-4548-a88f-cc45e427eac6" height="500"/> | <img src="https://github.com/user-attachments/assets/cc3243c3-9a75-4b77-8f1d-0a71e4029854" height="500"/> | 
 <br>
 
-> 홈 화면
-- 등록된 빵꾸러미 현황 조회
-- 신규 빵꾸러미 등록 및 관리
-- 가게 리뷰 조회 및 관리<br>
-
-> 빵 재고 인식
-- YOLOv8 기반 빵 종류와 수량 인식
-- 자체 라벨링 데이터 1,200장 이상을 기반으로 모델 학습
-- 등록된 정보는 자동 DB 반영<br>
-
-> 빵꾸러미 조합 추천
-- 인식된 재고로 빵꾸러미 패키지 자동 구성
-- 가격/종류를 균형있게 고려한 패키지 추천<br>
-
-> AI 분석 레포트 제공
-- Top3 빵 재고 현황 조회
-- 일/주/월 단위 재고량 그래프로 시각화
-- GPT API 연동을 통한 분석 레포트 제공<br>
+- **홈 화면**: 등록된 빵꾸러미 현황 조회, 신규 빵꾸러미 등록 및 관리, 가게 리뷰 조회 및 관리<br>
+- **빵 재고 인식**: YOLOv8 기반 빵 종류와 수량 인식, 자체 라벨링 데이터 1,200장 이상을 기반으로 모델 학습, 등록된 정보는 자동 DB 반영<br>
+- **빵꾸러미 조합 추천**: 인식된 재고로 빵꾸러미 패키지 자동 구성, 가격/종류를 균형있게 고려한 패키지 추천<br>
+- **AI 분석 레포트 제공**: Top3 빵 재고 현황 조회, 일/주/월 단위 재고량 그래프로 시각화, GPT API 연동을 통한 분석 레포트 제공<br>
 <br> 
 
 ### 2. 고객 (구매자) 
@@ -75,22 +61,10 @@
 | <img src="https://github.com/user-attachments/assets/2ee5d697-b348-48b5-a255-6358bdbe523a" height="500"/> | <img src="https://github.com/user-attachments/assets/ac489deb-b4b3-4ce2-9c31-4756587b00f7" height="470"/> | <img src="https://github.com/user-attachments/assets/455826e2-f407-438f-b8a4-ca05b4c44391" height="430"/> | <img src="https://github.com/user-attachments/assets/2bc62c4f-2ab6-4ad2-9ad1-bddbdfba3504" height="500"/> | 
 <br>
 
-> 홈 화면
-- 위치 기반으로 BEST 가게 추천 (5km 내 인기순)
-- 즐겨찾기 및 리뷰 기반 추천 시스템
-- 가게 리뷰 조회 및 관리<br>
-
-> 지도
-- Kakao Map API 기반 위치 서비스
-- 내 주변 가게/빵꾸러미 매장 지도 위 마커로 조회<br>
-
-> 결제
-- Toss Payments 결제 API 연동
-- 결제 성공 시 예약 확정 및 재고 자동 차감<br>
-
-> 절약한 자원/예약 확인
-- 예약 내역 확인 (진행 중/과거)
-- 절약한 금액/자원 통계 확인 및 리뷰 작성 기능<br>
+- **홈 화면**: 위치 기반으로 BEST 가게 추천 (5km 내 인기순), 즐겨찾기 및 리뷰 기반 추천 시스템, 가게 리뷰 조회 및 관리<br>
+- **지도**: Kakao Map API 기반 위치 서비스, 내 주변 가게/빵꾸러미 매장 지도 위 마커로 조회<br>
+- **결제**: Toss Payments 결제 API 연동, 결제 성공 시 예약 확정 및 재고 자동 차감<br>
+- **절약한 자원/예약 내역 확인**: 예약 내역 확인 (진행 중/완료), 절약한 금액/자원 통계 확인 및 리뷰 작성 기능<br>
 <br>
 
 ### 3. 공통
