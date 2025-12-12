@@ -62,10 +62,10 @@ public class ReservationService {
 
 	public void uncheckReservation(CustomUserDetails userDetails, long reservationId, int quantity) {
 		User user = userRepository.findById(userDetails.getUserId())
-			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
 		Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new CustomException(
-			ErrorCode.RESERVATION_NOT_FOUND));
+				ErrorCode.RESERVATION_NOT_FOUND));
 
 		if (!Objects.equals(user.getUserId(), reservation.getUser().getUserId())) {
 			throw new CustomException(ErrorCode.USER_NOT_RESERVATION_USER);
@@ -78,7 +78,7 @@ public class ReservationService {
 		log.info("✅ 결제대기 취소 완료");
 
 		BreadPackage breadPackage = breadPackageRepository.findById(reservation.getBreadPackage().getPackageId())
-			.orElseThrow(() -> new CustomException(ErrorCode.BREAD_PACKAGE_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.BREAD_PACKAGE_NOT_FOUND));
 		if (breadPackage.getPending() < 0) {
 			throw new CustomException(ErrorCode.BREAD_PACKAGE_QUANTITY_CONFLICT);
 		}
@@ -89,7 +89,7 @@ public class ReservationService {
 		log.info("✅ 변경된 개수: " + breadPackage.getQuantity());
 		BreadPackage newBreadPackage = breadPackageRepository.save(breadPackage);
 		log.info("✅ {}번 빵꾸러미 남은 개수: {} -> {}개", newBreadPackage.getPackageId(), quantity_origin,
-			newBreadPackage.getQuantity());
+				newBreadPackage.getQuantity());
 		breadPackage.setPending(breadPackage.getPending() - reservation.getQuantity());
 		log.info("🩵 예약 취소 성공 (CANCELED) 🩵");
 
@@ -101,20 +101,21 @@ public class ReservationService {
 	 */
 	public Map<String, Object> validateReservation(CustomUserDetails userDetails, ValidReservationRequest request) {
 		Bakery bakery = bakeryRepository.findById(request.bakeryId())
-			.orElseThrow(() -> new CustomException(ErrorCode.BAKERY_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.BAKERY_NOT_FOUND));
 
 		LocalDate today = LocalDate.now();
 		LocalDateTime startOfToday = today.atStartOfDay();
 		LocalDateTime endOfToday = today.plusDays(1).atStartOfDay();
-		BreadPackage breadPackage = breadPackageRepository.findByBakeryIdAndToday(bakery.getBakeryId(), startOfToday,
-			endOfToday);
+		BreadPackage breadPackage = breadPackageRepository.findByBakeryIdAndTodayWithLock(bakery.getBakeryId(),
+				startOfToday,
+				endOfToday);
 		if (breadPackage == null) {
 			throw new CustomException(ErrorCode.BREAD_PACKAGE_NOT_FOUND);
 		}
 		log.info("✅ {}번 빵꾸러미가 존재함", breadPackage.getPackageId());
 
 		User user = userRepository.findById(userDetails.getUserId())
-			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 		log.info("✅ {}번 사용자 검증 완료", userDetails.getUserId());
 
 		if (request.quantity() > breadPackage.getQuantity()) {
@@ -124,7 +125,7 @@ public class ReservationService {
 
 		// 중복 예약 검증 (PENDING 상태 예약 존재 여부 체크)
 		Optional<Reservation> existingReservation = reservationRepository.findByUser_UserIdAndBreadPackageAndStatus(
-			userDetails.getUserId(), breadPackage, "PENDING");
+				userDetails.getUserId(), breadPackage, "PENDING");
 		if (existingReservation.isPresent()) {
 			throw new CustomException(ErrorCode.DUPLICATE_RESERVATION);
 		}
@@ -132,15 +133,15 @@ public class ReservationService {
 
 		// 새로운 예약 객체 생성
 		Reservation reservation = Reservation.builder()
-			.user(user)
-			.bakery(breadPackage.getBakery())
-			.breadPackage(breadPackage)
-			.quantity(request.quantity())
-			.totalPrice(request.quantity() * (breadPackage.getPrice() / 2))
-			.status("PENDING")
-			.createdAt(LocalDateTime.now())
-			.paymentKey("PENDING_PAYMENT") // 임시 값 설정
-			.build();
+				.user(user)
+				.bakery(breadPackage.getBakery())
+				.breadPackage(breadPackage)
+				.quantity(request.quantity())
+				.totalPrice(request.quantity() * (breadPackage.getPrice() / 2))
+				.status("PENDING")
+				.createdAt(LocalDateTime.now())
+				.paymentKey("PENDING_PAYMENT") // 임시 값 설정
+				.build();
 
 		// 빵꾸러미 pending 설정
 		breadPackage.setPending(breadPackage.getPending() + request.quantity());
@@ -161,7 +162,7 @@ public class ReservationService {
 	 */
 	public Map<String, Object> createReservation(CustomUserDetails userDetails, ReservationCreateRequest request) {
 		Reservation reservation = reservationRepository.findById(request.reservationId())
-			.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
 		if (!reservation.getStatus().equals("PENDING")) {
 			throw new CustomException(ErrorCode.UNVERIFIED_RESERVATION);
 		}
@@ -174,7 +175,7 @@ public class ReservationService {
 
 		// 결제 정보 검증
 		ResponseEntity<String> response = paymentService.check(request.paymentKey(), request.amount(),
-			request.orderId());
+				request.orderId());
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new CustomException(ErrorCode.PAYMENT_NOT_VALID);
 		}
@@ -188,13 +189,13 @@ public class ReservationService {
 
 		// 해당 빵꾸러미의 개수에 예약 빵꾸러미 개수 반영
 		BreadPackage breadPackage = breadPackageRepository.findById(reservation.getBreadPackage().getPackageId())
-			.orElseThrow(() -> new CustomException(ErrorCode.BREAD_PACKAGE_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.BREAD_PACKAGE_NOT_FOUND));
 
 		int quantity_origin = breadPackage.getQuantity();
 		breadPackage.setPending(breadPackage.getPending() - reservation.getQuantity());
 		BreadPackage newBreadPackage = breadPackageRepository.save(breadPackage);
 		log.info("✅ {}번 빵꾸러미 남은 개수: {} -> {}개", newBreadPackage.getPackageId(), quantity_origin,
-			newBreadPackage.getQuantity());
+				newBreadPackage.getQuantity());
 		log.info("🩵 예약 성공 (CONFIRMED) 🩵");
 
 		// 예약한 사용자의 에코 값 업데이트
@@ -216,7 +217,7 @@ public class ReservationService {
 	public Map<String, Object> cancelReservation(CustomUserDetails userDetails, ReservationCancelRequest request) {
 		// 예약 정보 조회
 		Reservation reservation = reservationRepository.findById(request.reservationId())
-			.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
 
 		if (reservation.getStatus().equals("CANCELED")) {
 			throw new CustomException(ErrorCode.RESERVATION_ALREADY_CANCELED);
@@ -225,14 +226,14 @@ public class ReservationService {
 
 		log.info("사장님 ID: {}, 사용자 ID: {}", reservation.getBakery().getUser().getUserId(), userDetails.getUserId());
 		if (!reservation.getUser().getUserId().equals(userDetails.getUserId())
-			&& !reservation.getBakery().getUser().getUserId().equals(userDetails.getUserId())) {
+				&& !reservation.getBakery().getUser().getUserId().equals(userDetails.getUserId())) {
 			throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
 		}
 		log.info("✅ 현재 로그인한 사용자는 예약 취소 권한이 있음");
 
 		// 결제 취소
 		ResponseEntity<String> response = paymentService.cancelPayment(reservation.getPaymentKey(),
-			request.cancelReason());
+				request.cancelReason());
 		System.out.println(response.getBody());
 
 		// 해당 예약의 상태를 "CANCELED"로 변경
@@ -242,7 +243,7 @@ public class ReservationService {
 
 		// 해당 빵꾸러미의 개수에 취소된 예약 빵꾸러미 개수 반영
 		BreadPackage breadPackage = breadPackageRepository.findById(reservation.getBreadPackage().getPackageId())
-			.orElseThrow(() -> new CustomException(ErrorCode.BREAD_PACKAGE_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.BREAD_PACKAGE_NOT_FOUND));
 
 		int quantity_origin = breadPackage.getQuantity();
 		log.info("✅ {}번 빵꾸러미 원래 개수: {}", breadPackage.getPackageId(), quantity_origin);
@@ -250,7 +251,7 @@ public class ReservationService {
 		log.info("✅ 변경된 개수: " + breadPackage.getQuantity());
 		BreadPackage newBreadPackage = breadPackageRepository.save(breadPackage);
 		log.info("✅ {}번 빵꾸러미 남은 개수: {} -> {}개", newBreadPackage.getPackageId(), quantity_origin,
-			newBreadPackage.getQuantity());
+				newBreadPackage.getQuantity());
 		log.info("🩵 예약 취소 성공 (CANCELED) 🩵");
 
 		Map<String, Object> responseData = new HashMap<>();
@@ -266,7 +267,7 @@ public class ReservationService {
 	public Map<String, Object> pickUp(long reservationId, CustomUserDetails userDetails) {
 		// 예약 정보 조회
 		Reservation reservation = reservationRepository.findById(reservationId)
-			.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
 		if (reservation.getStatus().equals("COMPLETED")) {
 			throw new CustomException(ErrorCode.RESERVATION_ALREADY_COMPLETED);
 		} else if (reservation.getStatus().equals("CANCELED")) {
@@ -303,23 +304,23 @@ public class ReservationService {
 
 	private ReservationDTO entityToDTO(Reservation reservation) {
 		return ReservationDTO.builder()
-			.reservationId(reservation.getReservationId())
-			.createdAt(reservation.getCreatedAt())
-			.pickupAt(reservation.getPickupAt())
-			.status(reservation.getStatus())
-			.bakeryId(reservation.getBakery().getBakeryId())
-			.bakeryName(reservation.getBakery().getName())
-			.build();
+				.reservationId(reservation.getReservationId())
+				.createdAt(reservation.getCreatedAt())
+				.pickupAt(reservation.getPickupAt())
+				.status(reservation.getStatus())
+				.bakeryId(reservation.getBakery().getBakeryId())
+				.bakeryName(reservation.getBakery().getName())
+				.build();
 	}
 
 	public List<Map<String, Object>> getUserReservationList(CustomUserDetails userDetails, LocalDate startDate,
-		LocalDate endDate) {
+			LocalDate endDate) {
 		LocalDateTime startDateTime = startDate.atStartOfDay();
 		LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
 		log.info("startDateTime: " + startDateTime + "\nendDateTime: " + endDateTime);
 
 		List<Reservation> data = reservationRepository.findByUser_UserIdAndCreatedAtBetween(userDetails.getUserId(),
-			startDateTime, endDateTime);
+				startDateTime, endDateTime);
 		List<Map<String, Object>> responseList = new ArrayList<>();
 		for (Reservation d : data) {
 			Map<String, Object> response = new HashMap<>();
@@ -352,10 +353,10 @@ public class ReservationService {
 	 */
 	public ReservationForOwner getTodayOwnerReservations(CustomUserDetails userDetails, long bakeryId) {
 		User user = userRepository.findById(userDetails.getUserId())
-			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
 		Bakery bakery = bakeryRepository.findById(bakeryId)
-			.orElseThrow(() -> new CustomException(ErrorCode.BAKERY_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.BAKERY_NOT_FOUND));
 		log.info("✅ {}번 빵집이 존재함", bakeryId);
 
 		if (!bakery.getUser().getUserId().equals(user.getUserId())) {
@@ -367,7 +368,7 @@ public class ReservationService {
 		LocalDateTime startOfToday = today.atStartOfDay();
 		LocalDateTime endOfToday = today.plusDays(1).atStartOfDay();
 		List<ReservationInfo> reservationList = reservationRepository.findTodayReservationsByBakeryId(bakeryId,
-			startOfToday, endOfToday);
+				startOfToday, endOfToday);
 		String endTime = null;
 		if (!reservationList.isEmpty()) {
 			endTime = bakeryPickupService.getPickupTimetable(bakeryId).getEndTime();
@@ -380,19 +381,19 @@ public class ReservationService {
 	 * 사장님 예약 조회 메서드
 	 */
 	public List<ReservationResponse> getOwnerReservationList(CustomUserDetails userDetails, long bakeryId,
-		LocalDate startDate, LocalDate endDate) {
+			LocalDate startDate, LocalDate endDate) {
 		// TODO: bakeryId와 UserId로 소유자 검증 필요
-		//		String token = authorization.replace("Bearer ", "");
-		//		long userId = jwtTokenProvider.getUserIdFromToken(token);
+		// String token = authorization.replace("Bearer ", "");
+		// long userId = jwtTokenProvider.getUserIdFromToken(token);
 
 		LocalDateTime startDateTime = startDate.atStartOfDay();
 		LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
 
 		List<Reservation> reservationList = reservationRepository.findByBakery_BakeryIdAndCreatedAtBetween(bakeryId,
-			startDateTime, endDateTime);
+				startDateTime, endDateTime);
 		List<ReservationResponse> reservationDTOList = new ArrayList<>();
 		// for (Reservation reservation : reservationList) {
-		// 	reservationDTOList.add(entityToDto(reservation));
+		// reservationDTOList.add(entityToDto(reservation));
 		// }
 		return reservationDTOList;
 	}
@@ -440,7 +441,7 @@ public class ReservationService {
 
 	public Map<String, Object> getReservationInfo(CustomUserDetails userDetails, Long reservationId) {
 		Reservation reservation = reservationRepository.findById(reservationId)
-			.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
 
 		if (!reservation.getUser().getUserId().equals(userDetails.getUserId())) {
 			throw new CustomException(ErrorCode.USER_NOT_RESERVATION_USER);
@@ -462,7 +463,7 @@ public class ReservationService {
 
 	public int getReservationCnt(CustomUserDetails userDetails) {
 		User user = userRepository.findById(userDetails.getUserId())
-			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+				.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
 		return reservationRepository.countCompletedReservationsByUserId(user.getUserId());
 	}

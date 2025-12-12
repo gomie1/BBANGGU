@@ -1,8 +1,10 @@
 package com.ssafy.bbanggu.breadpackage;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,38 +23,49 @@ public interface BreadPackageRepository extends JpaRepository<BreadPackage, Long
 	// BreadPackageRepository
 	// ✅ 오늘 날짜의 빵꾸러미만 조회
 	@Query("SELECT b FROM BreadPackage b "
-		+ "WHERE b.bakery.bakeryId = :bakeryId "
-		+ "AND b.createdAt >= :startOfToday "
-		+ "AND b.createdAt < :startOfTomorrow "
-		+ "AND b.deletedAt IS NULL")
+			+ "WHERE b.bakery.bakeryId = :bakeryId "
+			+ "AND b.createdAt >= :startOfToday "
+			+ "AND b.createdAt < :startOfTomorrow "
+			+ "AND b.deletedAt IS NULL")
 	BreadPackage findByBakeryIdAndToday(
-		@Param("bakeryId") Long bakeryId,
-		@Param("startOfToday") LocalDateTime startOfToday,
-		@Param("startOfTomorrow") LocalDateTime startOfTomorrow
-	);
+			@Param("bakeryId") Long bakeryId,
+			@Param("startOfToday") LocalDateTime startOfToday,
+			@Param("startOfTomorrow") LocalDateTime startOfTomorrow);
+
+	// ✅ 비관적 락(Pessimistic Lock) 적용: 동시성 제어를 위해 조회 시점에 행을 잠금
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("SELECT b FROM BreadPackage b "
+			+ "WHERE b.bakery.bakeryId = :bakeryId "
+			+ "AND b.createdAt >= :startOfToday "
+			+ "AND b.createdAt < :startOfTomorrow "
+			+ "AND b.deletedAt IS NULL")
+	BreadPackage findByBakeryIdAndTodayWithLock(
+			@Param("bakeryId") Long bakeryId,
+			@Param("startOfToday") LocalDateTime startOfToday,
+			@Param("startOfTomorrow") LocalDateTime startOfTomorrow);
 
 	// 오늘 날짜의 빵꾸러미를 조회하되, 없다면 가장 최근 빵꾸러미 추출
 	@Query("""
-    SELECT b FROM BreadPackage b
-    WHERE b.bakery.bakeryId = :bakeryId
-    AND (
-        (DATE(b.createdAt) = CURRENT_DATE AND b.deletedAt IS NULL)
-        OR
-        b.id = (
-            SELECT b2.id
-            FROM BreadPackage b2
-            WHERE b2.bakery.bakeryId = :bakeryId
-            ORDER BY
-                CASE WHEN b2.deletedAt IS NULL THEN 0 ELSE 1 END,
-                b2.createdAt DESC
-            LIMIT 1
-        )
-    )
-    """)
+			SELECT b FROM BreadPackage b
+			WHERE b.bakery.bakeryId = :bakeryId
+			AND (
+			    (DATE(b.createdAt) = CURRENT_DATE AND b.deletedAt IS NULL)
+			    OR
+			    b.id = (
+			        SELECT b2.id
+			        FROM BreadPackage b2
+			        WHERE b2.bakery.bakeryId = :bakeryId
+			        ORDER BY
+			            CASE WHEN b2.deletedAt IS NULL THEN 0 ELSE 1 END,
+			            b2.createdAt DESC
+			        LIMIT 1
+			    )
+			)
+			""")
 	BreadPackage findTodayOrLastBreadPackage(@Param("bakeryId") Long bakeryId);
 
-
-	List<BreadPackage> findByBakery_BakeryIdAndCreatedAtBetweenAndDeletedAtIsNull(Long bakeryId, LocalDateTime startDate, LocalDateTime endDate);
+	List<BreadPackage> findByBakery_BakeryIdAndCreatedAtBetweenAndDeletedAtIsNull(Long bakeryId,
+			LocalDateTime startDate, LocalDateTime endDate);
 
 	// 하루가 지난 빵꾸러미를 자동 삭제 (deleted_at 업데이트)
 	@Transactional
