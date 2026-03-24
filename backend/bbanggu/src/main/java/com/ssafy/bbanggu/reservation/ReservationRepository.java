@@ -16,46 +16,47 @@ import com.ssafy.bbanggu.reservation.dto.ReservationInfo;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
 	// @Query("""
-	//     SELECT new com.ssafy.bbanggu.reservation.dto.ReservationResponse(
-	//         r.reservationId, r.bakery.bakeryId, r.bakery.name, r.createdAt, r.pickupAt, r.status
-	//     )
-	//     FROM Reservation r
-	//     JOIN r.user u
-	//     WHERE r.user.userId = :userId
-	//     AND r.createdAt BETWEEN :startDate AND :endDate
-	//     ORDER BY r.createdAt DESC
+	// SELECT new com.ssafy.bbanggu.reservation.dto.ReservationResponse(
+	// r.reservationId, r.bakery.bakeryId, r.bakery.name, r.createdAt, r.pickupAt,
+	// r.status
+	// )
+	// FROM Reservation r
+	// JOIN r.user u
+	// WHERE r.user.userId = :userId
+	// AND r.createdAt BETWEEN :startDate AND :endDate
+	// ORDER BY r.createdAt DESC
 	// """)
-	//List<ReservationResponse> findByUser_UserIdAndCreatedAtBetween(long userId, LocalDateTime startDate, LocalDateTime endDate);
+	// List<ReservationResponse> findByUser_UserIdAndCreatedAtBetween(long userId,
+	// LocalDateTime startDate, LocalDateTime endDate);
 	List<Reservation> findByUser_UserIdAndCreatedAtBetween(long userId, LocalDateTime startDate, LocalDateTime endDate);
 
 	List<Reservation> findByBakery_BakeryIdAndCreatedAtBetween(long bakeryId, LocalDateTime startDate,
-		LocalDateTime endDate);
+			LocalDateTime endDate);
 
 	Optional<Reservation> findByUser_UserIdAndBreadPackageAndStatus(long userId, BreadPackage breadPackage,
-		String status);
+			String status);
 
 	@Query("""
-    SELECT new com.ssafy.bbanggu.reservation.dto.ReservationInfo(
-        r.reservationId, u.name, u.profileImageUrl, u.phone, r.createdAt, r.status, r.quantity
-    )
-    FROM Reservation r
-    JOIN r.user u
-    WHERE r.bakery.bakeryId = :bakeryId
-    AND r.createdAt >= :startOfToday
-    AND r.createdAt < :startOfTomorrow
-    ORDER BY r.createdAt DESC
-""")
+			    SELECT new com.ssafy.bbanggu.reservation.dto.ReservationInfo(
+			        r.reservationId, u.name, u.profileImageUrl, u.phone, r.createdAt, r.status, r.quantity
+			    )
+			    FROM Reservation r
+			    JOIN r.user u
+			    WHERE r.bakery.bakeryId = :bakeryId
+			    AND r.createdAt >= :startOfToday
+			    AND r.createdAt < :startOfTomorrow
+			    ORDER BY r.createdAt DESC
+			""")
 	List<ReservationInfo> findTodayReservationsByBakeryId(
-		@Param("bakeryId") Long bakeryId,
-		@Param("startOfToday") LocalDateTime startOfToday,
-		@Param("startOfTomorrow") LocalDateTime startOfTomorrow
-	);
+			@Param("bakeryId") Long bakeryId,
+			@Param("startOfToday") LocalDateTime startOfToday,
+			@Param("startOfTomorrow") LocalDateTime startOfTomorrow);
 
 	// ✅ 특정 가게(bakeryId)의 오늘 픽업 완료된 예약들의 구매 수량 총합 구하기
 	@Query("SELECT COALESCE(SUM(r.quantity), 0) FROM Reservation r " +
-		"WHERE r.bakery.bakeryId = :bakeryId " +
-		"AND DATE(r.pickupAt) = CURRENT_DATE " +
-		"AND r.pickupAt IS NOT NULL")
+			"WHERE r.bakery.bakeryId = :bakeryId " +
+			"AND DATE(r.pickupAt) = CURRENT_DATE " +
+			"AND r.pickupAt IS NOT NULL")
 	int getTotalPickedUpQuantityTodayByBakeryId(Long bakeryId);
 
 	// 가게별 노쇼 예약 조회 (status가 CANCEL이 아니고, pickup_at이 NULL인 예약)
@@ -63,10 +64,17 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	List<Reservation> findMissedReservations(Long bakeryId);
 
 	// 가게별 노쇼 예약을 자동 픽업 처리 (pickup_at을 현재 시간으로 업데이트)
+	// 1. 노쇼 확정 (CONFIRMED -> COMPLETED)
+	// 픽업 시간이 지나고, 상태가 CONFIRMED인 예약들을 COMPLETED로 변경
 	@Transactional
 	@Modifying
-	@Query("UPDATE Reservation r SET r.pickupAt = :now, r.status = :status WHERE r.bakery.bakeryId = :bakeryId AND r.status != 'CANCEL' AND r.pickupAt IS NULL")
-	int updateMissedReservations(Long bakeryId, LocalDateTime now, String status);
+	@Query("UPDATE Reservation r SET r.pickupAt = :now, r.status = 'COMPLETED' WHERE r.bakery.bakeryId = :bakeryId AND r.status = 'CONFIRMED' AND r.pickupAt IS NULL")
+	int finalizeNoShowReservations(Long bakeryId, LocalDateTime now);
+
+	// 2. 결제 중단/타임아웃 건 조회 (PENDING 상태)
+	// 픽업 시간이 지났는데(혹은 하루가 지났는데) 여전히 PENDING인 예약들을 조회
+	@Query("SELECT r FROM Reservation r WHERE r.bakery.bakeryId = :bakeryId AND r.status = 'PENDING' AND r.createdAt < :now")
+	List<Reservation> findPendingReservations(Long bakeryId, LocalDateTime now);
 
 	// 오늘 빵꾸러미를 등록한 모든 가게의 아이디 조회
 	@Query("SELECT DISTINCT bp.bakery.bakeryId FROM BreadPackage bp WHERE bp.deletedAt IS NULL")

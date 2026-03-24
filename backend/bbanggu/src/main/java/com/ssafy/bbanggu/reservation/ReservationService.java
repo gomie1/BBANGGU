@@ -173,6 +173,12 @@ public class ReservationService {
 		}
 		log.info("✅ {}번 사용자 검증 완료", userDetails.getUserId());
 
+		// 이중 검증: 요청된 금액과 DB에 저장된 예약 총 결제 금액 비교
+		if (reservation.getTotalPrice() != request.amount()) {
+			throw new CustomException(ErrorCode.PAYMENT_AMOUNT_MISMATCH);
+		}
+		log.info("✅ 최종 결제 금액 이중 검증 완료");
+
 		// 결제 정보 검증
 		ResponseEntity<String> response = paymentService.check(request.paymentKey(), request.amount(),
 				request.orderId());
@@ -411,18 +417,52 @@ public class ReservationService {
 		return reservation.getUser().getUserId() == userId;
 	}
 
+	// 1. 노쇼 확정 (CONFIRMED -> COMPLETED)
+	// 픽업 시간이 지나고, 상태가 CONFIRMED인 예약들을 COMPLETED로 변경
 	/**
-	 * 특정 가게의 픽업되지 않은 예약을 자동 처리
+	 * 특정 가게의 예약을 자동 정산 처리 (2단계)
+	 * 1. 노쇼 확정 (CONFIRMED -> COMPLETED)
+	 * 2. 결제 중단 건 취소 및 재고 복구 (PENDING -> CANCELED)
 	 *
 	 * @param bakeryId 가게 ID
 	 */
 	@Transactional
 	public void processMissedReservations(Long bakeryId) {
 		LocalDateTime now = LocalDateTime.now();
-		String status = "COMPLETE";
-		int updatedCount = reservationRepository.updateMissedReservations(bakeryId, now, status);
-		if (updatedCount > 0) {
-			System.out.println("🚀 [" + bakeryId + "] 노쇼 예약 자동 처리 완료! (업데이트된 예약 수: " + updatedCount + ")");
+
+		// Step 1: 노쇼(No-Show) 확정 처리
+		int finalizedCount = reservationRepository.finalizeNoShowReservations(bakeryId, now);
+		if (finalizedCount > 0) {
+			log.info("🚀 [{}] 노쇼 예약 확정 처리 완료 (COMPLETED: {}건)", bakeryId, finalizedCount);
+		}
+
+		// Step 2: 결제 중단(Pending) 건 취소 및 재고 복구
+		List<Reservation> pendingReservations = reservationRepository.findPendingReservations(bakeryId, now);
+		int canceledCount = 0;
+
+		for (Reservation r : pendingReservations) {
+			// 상태 변경
+			r.setStatus("CANCELED");
+			r.setCancelledAt(now);
+
+			// 주석: PENDING 상태에서는 아직 결제가 안 된 것이므로, 환불 로직(PaymentService.cancel)은 불필요함.
+
+			// 재고 복구
+			BreadPackage breadPackage = r.getBreadPackage();
+			int quantity = r.getQuantity();
+
+			// pending(가차감 수량)에서 차감하고, quantity(실재고)를 원복
+			breadPackage.setPending(breadPackage.getPending() - quantity);
+			breadPackage.setQuantity(breadPackage.getQuantity() + quantity);
+
+			// 빵 꾸러미 저장 (Dirty Checking으로 자동 반영되지만 명시적으로 호출)
+			breadPackageRepository.save(breadPackage);
+
+			canceledCount++;
+		}
+
+		if (canceledCount > 0) {
+			log.info("♻️ [{}] 결제 중단 예약 취소 및 재고 복구 완료 (CANCELED: {}건)", bakeryId, canceledCount);
 		}
 	}
 
